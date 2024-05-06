@@ -1,8 +1,10 @@
 """Prints some information based on data retrieved from bank statement
 """
+
 from transactions_list_reader import FioTransactionsListReader
 from transactions_list_reader import CsobTransactionsListReader
 from transactions_list_reader import CSTransactionsListReader
+
 
 def print_principal_tax_added_interest_rate(transaction_list_reader):
     """Prints principal, deducted tax and added interest rate
@@ -10,12 +12,19 @@ def print_principal_tax_added_interest_rate(transaction_list_reader):
     Args:
         transaction_list_reader (TransactionListReader): instance of class TransactionListReader
     """
-    print(f"{transaction_list_reader.directory} total added interest rate: ",
-          transaction_list_reader.get_total_added_interest_rate())
-    print(f"{transaction_list_reader.directory} total deducted tax on interest: ",
-          transaction_list_reader.get_total_deducted_tax_on_interest())
-    print(f"{transaction_list_reader.directory} total principal: ",
-          transaction_list_reader.get_total_principal())
+    print(
+        f"{transaction_list_reader.directory} total added interest rate: ",
+        transaction_list_reader.get_total_added_interest_rate(),
+    )
+    print(
+        f"{transaction_list_reader.directory} total deducted tax on interest: ",
+        transaction_list_reader.get_total_deducted_tax_on_interest(),
+    )
+    print(
+        f"{transaction_list_reader.directory} total principal: ",
+        transaction_list_reader.get_total_principal(),
+    )
+
 
 csobReader = CsobTransactionsListReader()
 all_transactions_lists_csob = csobReader.read_all_transactions_lists()
@@ -35,21 +44,35 @@ print_principal_tax_added_interest_rate(csTransactionsListReader)
 total_added_interest_rate = float()
 total_principal = float()
 total_deducted_tax_on_iterest = float()
-for transactionReader in [csobReader, fioTransactionsListReader, csTransactionsListReader]:
+for transactionReader in [
+    csobReader,
+    fioTransactionsListReader,
+    csTransactionsListReader,
+]:
     total_added_interest_rate += transactionReader.get_total_added_interest_rate()
     total_principal += transactionReader.get_total_principal()
-    total_deducted_tax_on_iterest += transactionReader.get_total_deducted_tax_on_interest()
+    total_deducted_tax_on_iterest += (
+        transactionReader.get_total_deducted_tax_on_interest()
+    )
 
-print(f"csob + fio + cs: total added interest rate: {total_added_interest_rate},"\
-    f"total principal: {total_principal}, "\
-    f"total deduced tax on interest {total_deducted_tax_on_iterest}")
-print(f"csob + fio + cs (*0.17 - pln): "\
-    f"total added interest rate: {total_added_interest_rate * 0.17},"\
-    f"total principal: {total_principal * 0.17}, "\
-    f"total deduced tax on interest {total_deducted_tax_on_iterest * 0.17}")
-print(f"total added interest rate (tax 0.15): {total_added_interest_rate * 0.85},"\
+print(
+    f"csob + fio + cs: total added interest rate: {total_added_interest_rate},"
+    f"total principal: {total_principal}, "
+    f"total deduced tax on interest {total_deducted_tax_on_iterest}"
+)
+print(
+    f"csob + fio + cs (*0.17 - pln): "
+    f"total added interest rate: {total_added_interest_rate * 0.17},"
+    f"total principal: {total_principal * 0.17}, "
+    f"total deduced tax on interest {total_deducted_tax_on_iterest * 0.17}"
+)
+print(
+    f"total added interest rate (tax 0.15): {total_added_interest_rate * 0.85},"
     f"total added interest rate (tax 0.19): {total_added_interest_rate * 0.81},"
-    f"diff: {total_added_interest_rate * 0.81 - total_added_interest_rate * 0.85}")
-print(f"total added interest rate (tax 0.15 *0.17pln): {total_added_interest_rate * 0.85 * 0.17},"\
+    f"diff: {total_added_interest_rate * 0.81 - total_added_interest_rate * 0.85}"
+)
+print(
+    f"total added interest rate (tax 0.15 *0.17pln): {total_added_interest_rate * 0.85 * 0.17},"
     f"total added interest rate (tax 0.19 *0.17pln): {total_added_interest_rate * 0.81 * 0.17},"
-    f"diff: {(total_added_interest_rate * 0.81 - total_added_interest_rate * 0.85)*0.17}")
+    f"diff: {(total_added_interest_rate * 0.81 - total_added_interest_rate * 0.85)*0.17}"
+)

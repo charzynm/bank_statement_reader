@@ -1,36 +1,41 @@
 """Tool for reading positive interest accounting notes from bank statements
 """
+
 import csv
 import os
 import itertools
 from abc import abstractmethod
 import datetime
 
+
 class Transaction:
-    """Represents bank transaction
-    """
+    """Represents bank transaction"""
+
     def __init__(self, date, positive_interest_accounting_note):
         self.date = date
         self.positive_interest_accounting_note = positive_interest_accounting_note
 
+
 class PositiveInterestAccountingNote:
-    """Represents "Positive Interest Accounting Note"
-    """
-    def __init__(self, transaction_amount = 0.0, principal = 0.0, federal_withholding = 0.0):
+    """Represents "Positive Interest Accounting Note" """
+
+    def __init__(self, transaction_amount=0.0, principal=0.0, federal_withholding=0.0):
         self.transaction_amount = transaction_amount
         self.principal = principal
         self.federal_withholding = federal_withholding
 
     def __str__(self):
-        return f"Transaction Amount: {self.transaction_amount}, " \
+        return (
+            f"Transaction Amount: {self.transaction_amount}, "
             f"Principal: {self.principal}, Federal Withholding: {self.federal_withholding}"
+        )
 
     @classmethod
     def build_from_note_str(cls, note):
         """Build a new object from a string representation
 
         Args:
-            note (str): String representation of an object 
+            note (str): String representation of an object
             ('Transaction Amount: 1076,46, Principal: 914,99, Federal Withholding: 161,47')
 
         Returns:
@@ -42,12 +47,15 @@ class PositiveInterestAccountingNote:
             key, value = value_pair.split(": ")
             note_info[key] = float(value.replace(",", "."))
         return cls(
-            note_info["Transaction Amount"], note_info["Principal"],
-            note_info["Federal Withholding"])
+            note_info["Transaction Amount"],
+            note_info["Principal"],
+            note_info["Federal Withholding"],
+        )
+
 
 class TransactionsListReader:
-    """Represents generic reader of transactions lists
-    """
+    """Represents generic reader of transactions lists"""
+
     def __init__(self):
         self.no_of_rows_to_skip = 0
         self.directory = ""
@@ -66,7 +74,7 @@ class TransactionsListReader:
             list: list of transactions
         """
         with open(path, "r", encoding=self.encoding) as csvfile:
-            #skipping first two lines
+            # skipping first two lines
             csvfile = itertools.islice(csvfile, self.no_of_rows_to_skip, None)
             reader = csv.DictReader(csvfile, delimiter=self.delimiter)
             return list(reader)
@@ -100,13 +108,14 @@ class TransactionsListReader:
         return []
 
     def get_positive_interest_accounting_transactions(self):
-        """Gets from the list of all transactions only those 
+        """Gets from the list of all transactions only those
         related to interest rate and tax
         """
-        self.positive_interest_accounting_transactions = (
-            [transaction for transaction in self.read_all_transactions_lists()
-                if self.is_transaction_type_positive_interest_accounting(transaction)]
-        )
+        self.positive_interest_accounting_transactions = [
+            transaction
+            for transaction in self.read_all_transactions_lists()
+            if self.is_transaction_type_positive_interest_accounting(transaction)
+        ]
         return self.positive_interest_accounting_transactions
 
     def get_total_added_interest_rate(self):
@@ -115,8 +124,10 @@ class TransactionsListReader:
         Returns:
             float: total added interest rate
         """
-        return sum(transaction.positive_interest_accounting_note.transaction_amount
-                   for transaction in self.get_list_of_transactions())
+        return sum(
+            transaction.positive_interest_accounting_note.transaction_amount
+            for transaction in self.get_list_of_transactions()
+        )
 
     def get_total_deducted_tax_on_interest(self):
         """Sums up deducted tax on interest for all transactions
@@ -124,8 +135,10 @@ class TransactionsListReader:
         Returns:
             float: total deduced tax on interest
         """
-        return sum(transaction.positive_interest_accounting_note.federal_withholding
-                   for transaction in self.get_list_of_transactions())
+        return sum(
+            transaction.positive_interest_accounting_note.federal_withholding
+            for transaction in self.get_list_of_transactions()
+        )
 
     def get_total_principal(self):
         """Sums up principal for all transactions
@@ -133,8 +146,10 @@ class TransactionsListReader:
         Returns:
             float: total principal
         """
-        return sum(transaction.positive_interest_accounting_note.principal
-                   for transaction in self.get_list_of_transactions())
+        return sum(
+            transaction.positive_interest_accounting_note.principal
+            for transaction in self.get_list_of_transactions()
+        )
 
     @abstractmethod
     def is_transaction_type_positive_interest_accounting(self, transaction_str):
@@ -144,9 +159,10 @@ class TransactionsListReader:
             transaction_str (str): transaction string
         """
 
+
 class CsobTransactionsListReader(TransactionsListReader):
-    """Represents reader of transactions lists from CSOB
-    """
+    """Represents reader of transactions lists from CSOB"""
+
     def __init__(self):
         super().__init__()
         self.no_of_rows_to_skip = 2
@@ -173,9 +189,10 @@ class CsobTransactionsListReader(TransactionsListReader):
     def __get_positive_interest_accounting_transaction(self, note_str):
         return PositiveInterestAccountingNote.build_from_note_str(note_str)
 
+
 class FioTransactionsListReader(TransactionsListReader):
-    """Represents reader of transactions lists from FIO
-    """
+    """Represents reader of transactions lists from FIO"""
+
     def __init__(self):
         super().__init__()
         self.no_of_rows_to_skip = 9
@@ -188,22 +205,23 @@ class FioTransactionsListReader(TransactionsListReader):
             id_of_payment_order = trans_str["ID of payment order"]
             date = datetime.datetime.strptime(trans_str["Date"], "%m/%d/%Y").date()
             amount = float(trans_str["Volume"])
-            trans_with_id[id_of_payment_order] = (
-                trans_with_id.get(id_of_payment_order,
-                                  Transaction(date, PositiveInterestAccountingNote()))
+            trans_with_id[id_of_payment_order] = trans_with_id.get(
+                id_of_payment_order, Transaction(date, PositiveInterestAccountingNote())
             )
-            positive_interest_accounting_note = (
-                trans_with_id[id_of_payment_order].positive_interest_accounting_note
-            )
+            positive_interest_accounting_note = trans_with_id[
+                id_of_payment_order
+            ].positive_interest_accounting_note
             if trans_str["Type"] == "Added interest rate":
                 positive_interest_accounting_note.transaction_amount = amount
             elif trans_str["Type"] == "Deducted tax on interest":
                 positive_interest_accounting_note.federal_withholding = amount * -1
-            if (positive_interest_accounting_note.transaction_amount > 0 and
-                positive_interest_accounting_note.federal_withholding > 0):
+            if (
+                positive_interest_accounting_note.transaction_amount > 0
+                and positive_interest_accounting_note.federal_withholding > 0
+            ):
                 positive_interest_accounting_note.principal = (
-                    positive_interest_accounting_note.transaction_amount -
-                    positive_interest_accounting_note.federal_withholding
+                    positive_interest_accounting_note.transaction_amount
+                    - positive_interest_accounting_note.federal_withholding
                 )
         return list(trans_with_id.values())
 
@@ -212,9 +230,10 @@ class FioTransactionsListReader(TransactionsListReader):
         transaction_type = transaction_str["Type"]
         return transaction_type in ("Added interest rate", "Deducted tax on interest")
 
+
 class CSTransactionsListReader(TransactionsListReader):
-    """Represents reader of transactions lists from CS
-    """
+    """Represents reader of transactions lists from CS"""
+
     def __init__(self):
         super().__init__()
         self.directory = "cs"
@@ -230,7 +249,9 @@ class CSTransactionsListReader(TransactionsListReader):
                 transactions_tmp.append([trnctns[i], trnctns[i + 1]])
         transactions = []
         for trans_arr in transactions_tmp:
-            date = datetime.datetime.strptime(trans_arr[0]["Processing Date"], "%d.%m.%Y").date()
+            date = datetime.datetime.strptime(
+                trans_arr[0]["Processing Date"], "%d.%m.%Y"
+            ).date()
             transaction_amount = float(trans_arr[0]["Amount"])
             federal_withholding = float(trans_arr[1]["Amount"]) * -1
             principal = transaction_amount - federal_withholding
@@ -238,8 +259,10 @@ class CSTransactionsListReader(TransactionsListReader):
                 Transaction(
                     date,
                     PositiveInterestAccountingNote(
-                        transaction_amount, principal, federal_withholding)
-                ))
+                        transaction_amount, principal, federal_withholding
+                    ),
+                )
+            )
         return transactions
 
     def is_transaction_type_positive_interest_accounting(self, transaction_str):
@@ -247,4 +270,8 @@ class CSTransactionsListReader(TransactionsListReader):
         partner_account_number = transaction_str["Partner Account Number"]
         bank_code = transaction_str["Bank code"]
         transaction_amount = float(transaction_str["Amount"].replace(",", ""))
-        return partner_account_number == "" and bank_code == "0" and transaction_amount != 0
+        return (
+            partner_account_number == ""
+            and bank_code == "0"
+            and transaction_amount != 0
+        )
