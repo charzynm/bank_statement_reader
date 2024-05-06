@@ -3,13 +3,11 @@ install:
 		pip install -r requirements.txt
 
 lint:
-	pylint --disable=R,C,W1203,W0702 *.pylint
+	pylint --disable=R,C,W1203,W0702 *.py
 
 test:
-	python -m pytest -vv --cov=app test_*.py
-
+	python -m pytest tests
 format:
 	black *.py
 
-all:
-	install lint test format
+all: install lint test format
