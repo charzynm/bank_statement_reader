@@ -268,11 +268,11 @@ class CSTransactionsListReader(TransactionsListReader):
     def is_transaction_type_positive_interest_accounting(self, transaction_str):
         super().is_transaction_type_positive_interest_accounting(transaction_str)
         partner_account_number = transaction_str["Partner Account Number"]
-        #bank_code = transaction_str["Bank code"]
+        # bank_code = transaction_str["Bank code"]
         transaction_amount = self.get_amount_as_float(transaction_str["Amount"])
         return (
             partner_account_number == ""
-            #and bank_code == "0"
+            # and bank_code == "0"
             and transaction_amount != 0
         )
 
