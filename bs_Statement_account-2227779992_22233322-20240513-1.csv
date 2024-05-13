@@ -1,0 +1,13 @@
+﻿"Bank Statement No. 1/2024 from account ""22233334445/2222"""
+"Account Holder: Testsurname, Testname, Testaddress 1/m.1, Testcity, 11-222, Testcountry"
+"Created in the application Internet Banking 2.0: 05/13/2024 09:09:21 AM"
+"Period: 01/01/2024 - 02/29/2024"
+"Initial Account Balance to 01/01/2024: 1000 PPP"
+"Final Account Balance to 02/29/2024: 1000 PPP"
+"Sum of Incomes: +1000.00 PPP"
+"Sum of Expenses: -1000.00 PPP"
+
+"ID of transaction";"Date";"Volume";"Currency";"To account";"Corresponding account name";"Bank Code";"Bank Name";"KS";"VS";"SS";"Note";"Message for beneficiary";"Type";"Executed";"Specification";"Note";"BIC";"ID of payment order"
+"22233344451";"02/29/2024";"900.00";"PPP";"";"";"";"";"";"";"";"";"";"Added interest rate";"";"";"";"";"33344455522"
+"22233344452";"02/29/2024";"-100.00";"PPP";"";"";"";"";"";"";"";"";"";"Deducted tax on interest";"";"";"";"";"33344455522"
+"22233344453";"02/29/2024";"-1000.00";"PPP";"3332225552";"Testsurname, Testname";"2222";"Testbankname";"";"";"";"";"";"Transfer within the bank";"";"";"";"";"33344455522"
