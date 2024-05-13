@@ -1,0 +1,9 @@
+﻿Payment history 3335555999/0777 on 13.05.2024 08:47:54.
+
+account number;due date;amount;currency;balance;counter account;counter account bank code;counter account name;constant symbol;variable symbol;specific symbol;transaction type;standing order name;personal note;note;original transaction;rate;E2E Identification;original payer;the final beneficiary;ID transakce
+3335555999/0777;01.05.2024;-885,49;PPP;1000,00;555999333;0777;Testname Testsurname;;;;Outgoing payment;;;;;;;;;transhist-v-2024-05_2552ac55534f6238888082aabb152bdad7ced6a1
+3335555999/0777;30.04.2024;885,49;PPP;1000,00;;;;;;;Positive interest accounting;;;Transaction Amount: 1000,00, Principal: 900,00, Federal Withholding: 100,00;;;;;;transhist-v-2024-04_cdf45ed6b0de5cea5555330811698e8fd6a0977
+3335555999/0777;01.04.2024;-914,99;PPP;1000,00;555999333;0777;Testname Testsurname;;;;Outgoing payment;;;;;;;;;transhist-v-2024-04_9d8f333329a280d353bb752c238567a78d3647be
+3335555999/0777;31.03.2024;914,99;PPP;1000,00;;;;;;;Positive interest accounting;;;Transaction Amount: 1000,00, Principal: 900,00, Federal Withholding: 100,00;;;;;;transhist-v-2024-03_41fb5145eed01a11118e1e0a8b343b38a506e53a
+3335555999/0777;01.03.2024;-795,73;PPP;1000,00;555999333;0777;Testname Testsurname;;;;Outgoing payment;;;;;;;;;transhist-v-2024-03_2ed6576f5e229e99991cfbd205e35132921d3699
+3335555999/0777;29.02.2024;795,73;PPP;1000,00;;;;;;;Positive interest accounting;;;Transaction Amount: 1000,00, Principal: 900,00, Federal Withholding: 100,00;;;;;;transhist-v-2024-02_dd3792da7eca5d222238a6711f17c4120bb8a312
