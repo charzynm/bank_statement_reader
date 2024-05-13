@@ -37,6 +37,7 @@ print(all_transactions_lists_fio)
 print_principal_tax_added_interest_rate(fioTransactionsListReader)
 
 csTransactionsListReader = CSTransactionsListReader()
+csTransactionsListReader.directory = "examples/cs"
 all_transactions_lists_cs = csTransactionsListReader.read_all_transactions_lists()
 print(all_transactions_lists_cs)
 print_principal_tax_added_interest_rate(csTransactionsListReader)

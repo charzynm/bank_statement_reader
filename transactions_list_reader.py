@@ -252,8 +252,8 @@ class CSTransactionsListReader(TransactionsListReader):
             date = datetime.datetime.strptime(
                 trans_arr[0]["Processing Date"], "%d.%m.%Y"
             ).date()
-            transaction_amount = float(trans_arr[0]["Amount"])
-            federal_withholding = float(trans_arr[1]["Amount"]) * -1
+            transaction_amount = self.get_amount_as_float(trans_arr[0]["Amount"])
+            federal_withholding = self.get_amount_as_float(trans_arr[1]["Amount"]) * -1
             principal = transaction_amount - federal_withholding
             transactions.append(
                 Transaction(
@@ -268,10 +268,13 @@ class CSTransactionsListReader(TransactionsListReader):
     def is_transaction_type_positive_interest_accounting(self, transaction_str):
         super().is_transaction_type_positive_interest_accounting(transaction_str)
         partner_account_number = transaction_str["Partner Account Number"]
-        bank_code = transaction_str["Bank code"]
-        transaction_amount = float(transaction_str["Amount"].replace(",", ""))
+        #bank_code = transaction_str["Bank code"]
+        transaction_amount = self.get_amount_as_float(transaction_str["Amount"])
         return (
             partner_account_number == ""
-            and bank_code == "0"
+            #and bank_code == "0"
             and transaction_amount != 0
         )
+
+    def get_amount_as_float(self, amount_str):
+        return float(amount_str.replace(",", ""))
