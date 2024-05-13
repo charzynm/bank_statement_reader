@@ -7,6 +7,7 @@ from transactions_list_reader import CSTransactionsListReader
 
 change_path_to_examples_folder = True
 
+
 def print_principal_tax_added_interest_rate(transaction_list_reader):
     """Prints principal, deducted tax and added interest rate
 
@@ -28,21 +29,21 @@ def print_principal_tax_added_interest_rate(transaction_list_reader):
 
 
 csobReader = CsobTransactionsListReader()
-if change_path_to_examples_folder: 
+if change_path_to_examples_folder:
     csobReader.directory = "examples/csob"
 all_transactions_lists_csob = csobReader.read_all_transactions_lists()
 print(all_transactions_lists_csob)
 print_principal_tax_added_interest_rate(csobReader)
 
 fioTransactionsListReader = FioTransactionsListReader()
-if change_path_to_examples_folder: 
+if change_path_to_examples_folder:
     fioTransactionsListReader.directory = "examples/fio"
 all_transactions_lists_fio = fioTransactionsListReader.read_all_transactions_lists()
 print(all_transactions_lists_fio)
 print_principal_tax_added_interest_rate(fioTransactionsListReader)
 
 csTransactionsListReader = CSTransactionsListReader()
-if change_path_to_examples_folder: 
+if change_path_to_examples_folder:
     csTransactionsListReader.directory = "examples/cs"
 all_transactions_lists_cs = csTransactionsListReader.read_all_transactions_lists()
 print(all_transactions_lists_cs)
