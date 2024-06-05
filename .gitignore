@@ -2,6 +2,10 @@
 csob/
 cs/
 fio/
+backup_fio/
+backup_csob/
+backup_cs/
+reports/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
